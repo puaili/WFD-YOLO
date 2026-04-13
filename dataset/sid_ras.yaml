@@ -1,0 +1,18 @@
+# SID-RAS dataset config for WFD-YOLO
+# Update `path` to your local SID-RAS root before training.
+
+path: /path/to/SID-RAS
+train: images/train
+val: images/val
+test: images/test
+
+names:
+  0: Forceps
+  1: Hemostat
+  2: Scalpel
+  3: Mayo Scissors
+  4: Syringe
+  5: Stitch Scissors
+  6: Episiotomy Scissors
+  7: Gloves
+  8: Cotton

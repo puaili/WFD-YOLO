@@ -1,0 +1,9 @@
+# dataset path
+path: /root/autodl-tmp/dataset/tiny_person # dataset root dir
+train: images/train # train images (relative to 'path')  6471 images
+val:  images/test # val images (relative to 'path')  548 images
+test:  images/test # test images (optional)  1610 images
+
+# Classes
+names:
+  0: person
