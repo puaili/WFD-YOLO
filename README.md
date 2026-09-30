@@ -7,19 +7,81 @@ WFD-YOLO is a YOLOv12n-based surgical-instrument detector for the OSI26 benchmar
 - **DGFA** adaptively fuses spatial-detail and transformed-domain semantic features.
 - The final detector uses the native YOLOv12 BCE + CIoU + DFL objective. ATFL is not part of the final model.
 
-## Experimental visualizations
+## Figures and tables from the revised manuscript
 
-The following plots summarize the accuracy and efficiency trade-offs reported
-for the OSI26 experiments. They are stored in the repository so they render
-directly on the GitHub project page.
+The images below are the actual figures and 600-dpi table captures from
+`2182_WFD-YOLO_Revised_Manuscript.pdf`. The enhanced-resolution copies are
+kept under `assets/paper_figures/` and `assets/paper_tables/` for direct
+viewing or reuse when preparing the submission.
 
-![WFD-YOLO accuracy and efficiency trade-off](https://raw.githubusercontent.com/puaili/WFD-YOLO/main/assets/tradeoff.svg)
+### Figures
 
-<p align="center"><em>Accuracy, parameter count, and computational-cost comparison.</em></p>
+![Fig. 1 — Overall architecture of WFD-YOLO](assets/paper_figures/Fig1_overall.png)
 
-![WFD-YOLO compact detector trade-off visualization](https://raw.githubusercontent.com/puaili/WFD-YOLO/main/assets/tradeoff_turbo.svg)
+*Fig. 1. Overall architecture of WFD-YOLO. The highlighted nodes denote the
+frequency-aware enhancement and adaptive fusion modules.*
 
-<p align="center"><em>Compact-detector trade-off visualization used for the comparative analysis.</em></p>
+![Fig. 2 — WFCA module](assets/paper_figures/Fig2_WFCA.png)
+
+*Fig. 2. Structure of the WFCA module.*
+
+![Fig. 3 — SFPA module](assets/paper_figures/Fig3_SFPA.png)
+
+*Fig. 3. Structure of the SFPA module.*
+
+![Fig. 4 — DGFA module](assets/paper_figures/Fig4_DGFA.png)
+
+*Fig. 4. Structure of the DGFA module.*
+
+![Fig. 5 — Error analysis cases](assets/paper_figures/Fig5_cases.png)
+
+![Fig. 5 — Confusion matrix](assets/paper_figures/Fig5_confusion.png)
+
+*Fig. 5. OSI26 error analysis at confidence 0.25 and matching IoU 0.50:
+representative false-positive/false-negative cases and the count confusion
+matrix.*
+
+### Fig. 6 stress-test examples
+
+The eight panels are shown in the same order as the paper: clean, brightness,
+contrast, blur, smoke, specular, occlusion, and clutter.
+
+| Clean | Brightness | Contrast | Blur |
+|---|---|---|---|
+| ![Fig. 6 clean](assets/paper_figures/Fig6_1.jpg) | ![Fig. 6 brightness](assets/paper_figures/Fig6_2.jpg) | ![Fig. 6 contrast](assets/paper_figures/Fig6_3.jpg) | ![Fig. 6 blur](assets/paper_figures/Fig6_4.jpg) |
+
+| Smoke | Specular | Occlusion | Clutter |
+|---|---|---|---|
+| ![Fig. 6 smoke](assets/paper_figures/Fig6_5.jpg) | ![Fig. 6 specular](assets/paper_figures/Fig6_6.jpg) | ![Fig. 6 occlusion](assets/paper_figures/Fig6_7.jpg) | ![Fig. 6 clutter](assets/paper_figures/Fig6_8.jpg) |
+
+*Fig. 6. Representative deterministic stress-test images on OSI26.*
+
+### Tables
+
+<details>
+<summary>Show the five manuscript tables</summary>
+
+**Table 1 — Integration positions and learned gating weights**
+
+![Table 1](assets/paper_tables/table1_screenshot_600dpi.png)
+
+**Table 2 — Batch-1 latency on RTX 3090 at 640×640**
+
+![Table 2](assets/paper_tables/table2_screenshot_600dpi.png)
+
+**Table 3 — Five-run performance comparison on OSI26**
+
+![Table 3](assets/paper_tables/table3_screenshot_600dpi.png)
+
+**Table 4 — Class-wise OSI26 results**
+
+![Table 4](assets/paper_tables/table4_screenshot_600dpi.png)
+
+**Table 5 — Deterministic robustness evaluation**
+
+![Table 5](assets/paper_tables/table5_screenshot_600dpi.png)
+
+</details>
 
 ## Repository layout
 

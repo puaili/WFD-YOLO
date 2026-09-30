@@ -1,0 +1,13 @@
+*__pycache__/
+.yolo_config/
+.dataset_cache/
+runs/
+training_logs/
+# Ignore generated checkpoints while keeping the official initialization file.
+*.pt
+!yolov12n.pt
+data/OSI26_Dataset/
+reviewer_*/
+sa_matching_detr_*/
+WFD_YOLO_OSI26_200e_summary.json
+WFD_YOLO_OSI26_200e_report.md
