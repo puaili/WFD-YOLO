@@ -1,0 +1,46 @@
+# WFD-YOLO-N for OSI26 surgical-instrument detection
+# The original YOLOv12n path is preserved at every modified node. WFCA and
+# SFPA+DGFA run as parallel innovation branches controlled by learnable convex
+# gates initialized to 95% baseline / 5% innovation. Zero-initialized residual
+# adapters make the complete step-zero forward pass exactly equal to the
+# transferred baseline. Detection uses the native YOLOv12 loss (BCE
+# classification + CIoU/DFL regression); ATFL is disabled.
+
+nc: 26
+scales:
+  n: [0.50, 0.25, 1024]
+
+backbone:
+  # [from, repeats, module, args]
+  - [-1, 1, Conv, [64, 3, 2]]                    # 0-P1/2
+  - [-1, 1, Conv, [128, 3, 2, 1, 2]]             # 1-P2/4
+  - [-1, 2, C3k2, [256, False, 0.25]]            # 2
+  - [-1, 1, Conv, [256, 3, 2, 1, 4]]             # 3-P3/8
+  - [-1, 2, C3k2, [512, False, 0.25]]            # 4 baseline P3
+  - [-1, 1, WFCAParallel, []]                    # 5 baseline || WFCA
+  - [-1, 1, Conv, [512, 3, 2]]                   # 6-P4/16
+  - [-1, 4, A2C2f, [512, True, 4]]               # 7 baseline P4
+  - [-1, 1, WFCAParallel, []]                    # 8 baseline || WFCA
+  - [-1, 1, Conv, [1024, 3, 2]]                  # 9-P5/32
+  - [-1, 4, A2C2f, [1024, True, 1]]              # 10
+
+head:
+  # Every ParallelFusion keeps the exact original Concat as one branch and
+  # learns SFPA(lateral)+DGFA as the alternative branch.
+  - [-1, 1, nn.Upsample, [None, 2, "nearest"]]   # 11
+  - [[-1, 8], 1, ParallelFusion, []]              # 12 baseline Concat || SFPA+DGFA
+  - [-1, 2, A2C2f, [512, False, -1]]             # 13-P4
+
+  - [-1, 1, nn.Upsample, [None, 2, "nearest"]]   # 14
+  - [[-1, 5], 1, ParallelFusion, []]              # 15 baseline Concat || SFPA+DGFA
+  - [-1, 2, A2C2f, [256, False, -1]]             # 16-P3
+
+  - [-1, 1, Conv, [256, 3, 2]]                   # 17
+  - [[-1, 13], 1, ParallelFusion, []]             # 18 baseline Concat || SFPA+DGFA
+  - [-1, 2, A2C2f, [512, False, -1]]             # 19-P4
+
+  - [-1, 1, Conv, [512, 3, 2]]                   # 20
+  - [[-1, 10], 1, ParallelFusion, []]             # 21 baseline Concat || SFPA+DGFA
+  - [-1, 2, C3k2, [1024, True]]                  # 22-P5
+
+  - [[16, 19, 22], 1, Detect, [nc]]              # 23 Detect(P3, P4, P5)
